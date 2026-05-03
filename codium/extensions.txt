@@ -1,0 +1,9 @@
+Python
+Black Formatter
+Error Lens
+ESLint
+Live Server
+Markdown All in One
+npm Intellisense
+Prettier
+TabOut
