@@ -1,12 +1,16 @@
 return {
   {
-    "rebelot/kanagawa.nvim",
-    lazy = true,
+    "ellisonleao/gruvbox.nvim",
     priority = 1000,
-    opts = function()
-      return {
-        theme = "dragon",
-      }
-    end,
+    config = true,
+    opts = {
+      italic = {
+        strings = false,
+        emphasis = false,
+        comments = true,
+        operators = false,
+        folds = false,
+      },
+    },
   },
 }
