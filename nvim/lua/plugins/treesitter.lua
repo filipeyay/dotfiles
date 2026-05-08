@@ -13,6 +13,7 @@ return {
         "scss",
         "sql",
         "svelte",
+        "org",
       },
 
       -- matchup = {
