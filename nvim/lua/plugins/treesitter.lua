@@ -7,18 +7,15 @@ return {
     opts = {
       ensure_installed = {
         "css",
+        "python",
         "gitignore",
+        "typescript",
         "http",
         "php",
         "scss",
         "sql",
         "svelte",
-        "org",
       },
-
-      -- matchup = {
-      -- 	enable = true,
-      -- },
 
       -- https://github.com/nvim-treesitter/playground#query-linter
       query_linter = {

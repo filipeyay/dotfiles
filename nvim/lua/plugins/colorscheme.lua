@@ -1,34 +1,30 @@
 return {
   {
-    "polirritmico/monokai-nightasty.nvim",
+    "oskarnurm/koda.nvim",
     lazy = false,
     priority = 1000,
-    config = true,
-    opts = {
-      dark_style_background = "#1e1e1e",
+    config = function()
+      vim.cmd("colorscheme koda-dark")
 
-      hl_styles = {
-        comments = { italic = false },
-        keywords = { italic = false },
-        functions = { italic = false },
-        variables = { italic = false },
-      },
-    },
+      local bg = "#101010"
+      local fg = "#EBEBEB"
+      vim.api.nvim_set_hl(0, "Normal", { fg = fg, bg = bg })
+      vim.api.nvim_set_hl(0, "NormalFloat", { fg = fg, bg = bg })
 
-    config = function(_, opts)
-      require("monokai-nightasty").setup(opts)
-      require("monokai-nightasty").load()
-
-      vim.schedule(function()
-        for _, group in ipairs(vim.fn.getcompletion("", "highlight")) do
-          local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = group })
-
-          if ok and hl.italic then
-            hl.italic = false
-            vim.api.nvim_set_hl(0, group, hl)
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function()
+          local hls = vim.fn.getcompletion("", "highlight")
+          for _, name in ipairs(hls) do
+            local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name })
+            if ok and hl.italic then
+              local new_hl = vim.deepcopy(hl)
+              new_hl.italic = false
+              vim.api.nvim_set_hl(0, name, new_hl)
+            end
           end
-        end
-      end)
+        end,
+      })
     end,
   },
 }

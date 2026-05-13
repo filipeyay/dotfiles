@@ -56,4 +56,30 @@ return {
       "folke/snacks.nvim",
     },
   },
+
+  -- Tabout
+  {
+    "abecodes/tabout.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    opts = {
+      tabkey = "<A-l>",
+      backwards_tabkey = "<A-h>",
+
+      act_as_tab = false,
+      act_as_shift_tab = false,
+
+      enable_backwards = true,
+
+      tabouts = {
+        { open = "'", close = "'" },
+        { open = '"', close = '"' },
+        { open = "`", close = "`" },
+        { open = "(", close = ")" },
+        { open = "[", close = "]" },
+        { open = "{", close = "}" },
+      },
+    },
+  },
 }
