@@ -1,4 +1,4 @@
-/* Força o verde charme na seleção de texto de qualquer site */
+
 ::-moz-selection {
     background-color: rgb(134, 205, 130) !important;
     color: rgb(16, 16, 16) !important;
