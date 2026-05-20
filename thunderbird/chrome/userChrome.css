@@ -1,53 +1,98 @@
-/* ==========================================================================
- *  CUSTOMIZAÇÃO THUNDERBIRD: MINIMAL CODE DARK
- *  ========================================================================== */
 
 :root {
-    /* Fundo Principal (BackgroundNormal: 16, 16, 16) */
     --thunderbird-bg: rgb(16, 16, 16) !important;
     --pane-bg: rgb(16, 16, 16) !important;
-
-    /* Fundo Alternado (BackgroundAlternate: 24, 24, 24) */
     --tabs-toolbar-bg: rgb(24, 24, 24) !important;
     --toolbar-bg: rgb(24, 24, 24) !important;
-
-    /* O Verde Ativo (Active/Selection: 134, 205, 130) */
     --highlight-bg: rgb(134, 205, 130) !important;
     --highlight-color: rgb(16, 16, 16) !important;
 
-    /* Variáveis nativas de Hover do Thunderbird */
-    --toolbarbutton-hover-background: rgb(134, 205, 130) !important;
-    --toolbarbutton-hover-color: rgb(16, 16, 16) !important;
+    --treeitem-background-selected: rgb(134, 205, 130) !important;
+    --treeitem-background-selected-focus: rgb(134, 205, 130) !important;
+    --treeitem-color-selected: rgb(16, 16, 16) !important;
+    --treeitem-color-selected-focus: rgb(16, 16, 16) !important;
+
+    /* Zera os tokens de cor de linha do sistema */
+    --tab-line-color: transparent !important;
+    --tabs-border-color: transparent !important;
+    --tab-loading-fill: transparent !important;
 }
 
-/* Forçar fundo escuro nas barras principais e painéis de pastas/mensagens */
-#navigation-toolbox,
-#tabs-toolbar,
-#folderPane,
-#threadPane,
-#messagePaneBox {
+
+#navigation-toolbox, #tabs-toolbar, #folderPane, #threadPane,
+#messagePaneBox, .main-layout, #folderTree, #threadTree {
 background-color: rgb(16, 16, 16) !important;
 color: rgb(255, 255, 255) !important;
 }
 
-/* Cor da linha e fundo da aba ativa */
+
+.tabbrowser-tab[selected="true"] .tab-background,
 .tab-background[selected="true"] {
     background-color: rgb(24, 24, 24) !important;
     background-image: none !important;
-    border-top: 2px solid rgb(134, 205, 130) !important; /* Linha Verde */
+    border-top: 2px solid rgb(134, 205, 130) !important;
+    border-bottom: 0px solid transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-/* Efeito de seleção na lista de e-mails e pastas (O charme verde) */
-.selected,
-li[selected="true"],
-treechildren::-moz-tree-cell(selected) {
-    background-color: rgb(134, 205, 130) !important;
-    color: rgb(16, 16, 16) !important;
+
+.tab-line,
+.tab-bottom-line,
+.tabbrowser-tab .tab-stack::after,
+.tab-background::before,
+.tab-background::after {
+    display: none !important;
+    background-color: transparent !important;
+    height: 0px !important;
 }
 
-/* Ajuste de cor dos ícones da barra de ferramentas no Hover */
+
+#folderPane {
+--selected-background-color: rgb(134, 205, 130) !important;
+--selected-text-color: rgb(16, 16, 16) !important;
+}
+#folderTree li[selected="true"] > .container {
+background-color: rgb(134, 205, 130) !important;
+color: rgb(16, 16, 16) !important;
+}
+#folderTree li[selected="true"] * {
+color: rgb(16, 16, 16) !important;
+}
+#threadPane {
+--row-selected-background-color: rgb(134, 205, 130) !important;
+--row-selected-focus-background-color: rgb(134, 205, 130) !important;
+--row-selected-text-color: rgb(16, 16, 16) !important;
+--row-selected-focus-text-color: rgb(16, 16, 16) !important;
+}
+#threadTree tr[selected="true"], #threadTree li[selected="true"] {
+background-color: rgb(134, 205, 130) !important;
+color: rgb(16, 16, 16) !important;
+}
+
+
+#folderPane-newmail-button,
+.button-primary,
+#navigation-toolbox button.button-primary {
+background-color: rgb(134, 205, 130) !important;
+color: rgb(16, 16, 16) !important;
+border: 1px solid rgb(16, 16, 16) !important;
+box-shadow: none !important;
+}
+#folderPane-newmail-button * {
+color: rgb(16, 16, 16) !important;
+fill: rgb(16, 16, 16) !important;
+}
+#folderPane-newmail-button:hover {
+background-color: rgb(134, 205, 130) !important;
+filter: brightness(1.1) !important;
+}
+
+
 toolbarbutton:hover .toolbarbutton-icon,
-toolbarbutton:hover image {
-    fill: rgb(16, 16, 16) !important;
-    color: rgb(16, 16, 16) !important;
+toolbarbutton:hover image,
+.titlebar-button:hover,
+#nav-bar toolbarbutton:hover .toolbarbutton-icon {
+fill: currentColor !important;
+color: inherit !important;
 }
