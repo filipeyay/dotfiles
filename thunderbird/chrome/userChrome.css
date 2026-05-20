@@ -1,0 +1,53 @@
+/* ==========================================================================
+ *  CUSTOMIZAÇÃO THUNDERBIRD: MINIMAL CODE DARK
+ *  ========================================================================== */
+
+:root {
+    /* Fundo Principal (BackgroundNormal: 16, 16, 16) */
+    --thunderbird-bg: rgb(16, 16, 16) !important;
+    --pane-bg: rgb(16, 16, 16) !important;
+
+    /* Fundo Alternado (BackgroundAlternate: 24, 24, 24) */
+    --tabs-toolbar-bg: rgb(24, 24, 24) !important;
+    --toolbar-bg: rgb(24, 24, 24) !important;
+
+    /* O Verde Ativo (Active/Selection: 134, 205, 130) */
+    --highlight-bg: rgb(134, 205, 130) !important;
+    --highlight-color: rgb(16, 16, 16) !important;
+
+    /* Variáveis nativas de Hover do Thunderbird */
+    --toolbarbutton-hover-background: rgb(134, 205, 130) !important;
+    --toolbarbutton-hover-color: rgb(16, 16, 16) !important;
+}
+
+/* Forçar fundo escuro nas barras principais e painéis de pastas/mensagens */
+#navigation-toolbox,
+#tabs-toolbar,
+#folderPane,
+#threadPane,
+#messagePaneBox {
+background-color: rgb(16, 16, 16) !important;
+color: rgb(255, 255, 255) !important;
+}
+
+/* Cor da linha e fundo da aba ativa */
+.tab-background[selected="true"] {
+    background-color: rgb(24, 24, 24) !important;
+    background-image: none !important;
+    border-top: 2px solid rgb(134, 205, 130) !important; /* Linha Verde */
+}
+
+/* Efeito de seleção na lista de e-mails e pastas (O charme verde) */
+.selected,
+li[selected="true"],
+treechildren::-moz-tree-cell(selected) {
+    background-color: rgb(134, 205, 130) !important;
+    color: rgb(16, 16, 16) !important;
+}
+
+/* Ajuste de cor dos ícones da barra de ferramentas no Hover */
+toolbarbutton:hover .toolbarbutton-icon,
+toolbarbutton:hover image {
+    fill: rgb(16, 16, 16) !important;
+    color: rgb(16, 16, 16) !important;
+}
