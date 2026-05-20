@@ -35,7 +35,22 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-gruvbox)
+
+(add-to-list 'custom-theme-load-path (expand-file-name "themes/" doom-private-dir))
+(setq doom-theme 'kanagawa-dragon)
+(setq doom-themes-enable-italic nil)
+
+(defun my-disable-italics-h ()
+  (interactive)
+  (mapc (lambda (face)
+          (when (not (keywordp face))
+            (condition-case nil
+                (when (eq (face-attribute face :slant) 'italic)
+                  (set-face-attribute face nil :slant 'normal))
+              (error nil))))
+        (face-list)))
+
+(add-hook 'doom-load-theme-hook #'my-disable-italics-h)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
