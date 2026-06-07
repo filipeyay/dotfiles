@@ -90,28 +90,7 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     opts = function(_, opts)
-      local fg = "#EBEBEB"
-      local bg = "#101010"
-      local grey = "#444444"
-
-      local custom_monochrome = {
-        normal = {
-          a = { fg = bg, bg = fg, gui = "bold" },
-          b = { fg = fg, bg = grey },
-          c = { fg = fg, bg = bg },
-        },
-        insert = { a = { fg = bg, bg = fg, gui = "bold" } },
-        visual = { a = { fg = bg, bg = fg, gui = "bold" } },
-        replace = { a = { fg = bg, bg = fg, gui = "bold" } },
-        inactive = {
-          a = { fg = grey, bg = bg },
-          b = { fg = grey, bg = bg },
-          c = { fg = grey, bg = bg },
-        },
-      }
-
       opts.options = {
-        theme = custom_monochrome,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         icons_enabled = false,
