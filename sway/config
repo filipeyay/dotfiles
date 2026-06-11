@@ -4,8 +4,8 @@ set $down j
 set $up k
 set $right l
 set $term kitty
-set $screenshot grim
-set $menu fuzzel
+set $screenshot screengrab
+set $menu rofi -show drun
 
 output * scale 1 mode 2880x1800@60Hz bg $HOME/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png fill
 exec swayidle -w \
@@ -13,12 +13,19 @@ exec swayidle -w \
          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
           before-sleep 'swaylock -f --image "/home/filipe/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png"' \
 
-for_window [title="emacs-capture-*"] floating enable, move position center
-
-input type:keyboard {
-      #xkb_options ctrl:swapcaps,compose:lctrl
-      xkb_options ctrl:nocaps,compose:grave
+input "type:keyboard" {
+    xkb_layout "us(altgr-intl),pt"
+    xkb_options "grp:alt_shift_toggle"
 }
+
+# volume
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# brightness
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 
 input type:touchpad {
     tap enabled
@@ -66,11 +73,8 @@ input type:touchpad {
     bindsym $mod+w layout tabbed
     bindsym $mod+e layout toggle split
     bindsym $mod+f fullscreen
-    bindsym Print exec $screenshot
-    bindsym $mod+Shift+s exec grim -g "$(slurp)"
-    bindsym $mod+s exec sh -c 'tmp=$(mktemp /tmp/ocr.XXXXXX.png) && grim -g "$(slurp)" "$tmp" && TESSDATA_PREFIX=$(guix build tesseract-ocr-tessdata-fast)/share/tessdata tesseract -l chi_sim "$tmp" stdout | wl-copy && rm "$tmp"'
-    #bindsym $mod+o exec emacsclient -c -n -e '(switch-to-buffer nil)'
-    #bindsym $mod+n exec emacsclient -c -n -e '(switch-to-buffer nil)' -e '(org-capture)'
+    bindsym Print exec $screenshot --fullscreen --save
+    bindsym $mod+Shift+s exec screengrab --area --save
     bindsym $mod+Shift+space floating toggle
     bindsym $mod+space focus mode_toggle
     bindsym $mod+a focus parent
@@ -94,7 +98,3 @@ bar {
   swaybar_command waybar
 }
 
-#Exec pipewire
-#exec light -U 90
-#exec dbus-update-activation-environment --all
-#exec fcitx5

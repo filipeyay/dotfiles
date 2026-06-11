@@ -16,14 +16,30 @@
   ],
   "modules-right": [
     "custom/org-clock",
+    "tray",
+    "sway/language",
     "idle_inhibitor",
     "pulseaudio",
     "network",
-    "battery"
+    "battery",
+    "custom/lock",
+    "custom/logout",
+    "custom/reboot",
+    "custom/shutdown"
   ],
   "sway/window": {
     "format": "",
     "max-length": 40
+  },
+  "tray": {
+    "icon-size": 21,
+    "spacing": 10,
+    "show-passive-items": true
+  },
+  "sway/language": {
+    "format": "{short} {flag}",
+    "tooltip": true,
+    "on-click": "swaymsg input type:keyboard xkb_switch_layout next"
   },
   "clock": {
     "format": "{:%H:%M %p - %a, %d %b %Y}",
@@ -37,8 +53,8 @@
       "critical": 5
     },
     "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% (charging)",
-    "format-plugged": "{capacity}% (plugged)",
+    "format-charging": "⚡{capacity}% {icon}",
+    "format-plugged": "🔌{capacity}% {icon}",
     "format-icons": [
       " ",
       " ",
@@ -48,9 +64,17 @@
     ]
   },
   "network": {
-    "format-wifi": "wi-fi ({signalStrength}%)  ",
+    "format-wifi": "{essid} ({signalStrength}%)  ",
     "format-ethernet": "{ifname}: {ipaddr}/{cidr}  ",
-    "format-disconnected": "Disconnected ⚠"
+    "format-disconnected": "Disconnected ⚠",
+    "tooltip-format-wifi": "{essid} - {ipaddr}"
+  },
+  "bluetooth": {
+    "format": "{icon}",
+    "format-icons": {
+      "enabled": "",
+      "disabled": ""
+    }
   },
   "custom/org-clock": {
     "exec": "$HOME/.config/waybar/org-clock2.sh",
@@ -65,7 +89,6 @@
     }
   },
   "pulseaudio": {
-    //"scroll-step": 1,
     "format": "{volume}% {icon}",
     "format-bluetooth": "{volume}% {icon}",
     "format-muted": " ",
@@ -82,5 +105,29 @@
       ]
     },
     "on-click": "pavucontrol"
+  },
+  "custom/lock": {
+    "format": " ",
+    "tooltip": "Lock Screen",
+    "on-click": "swaylock -f --image '/home/filipe/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png'",
+    "interval": "once"
+  },
+  "custom/logout": {
+    "format": " ",
+    "tooltip": "Logout",
+    "on-click": "swaymsg exit",
+    "interval": "once"
+  },
+  "custom/reboot": {
+    "format": " ",
+    "tooltip": "Reboot",
+    "on-click": "reboot",
+    "interval": "once"
+  },
+  "custom/shutdown": {
+    "format": " ",
+    "tooltip": "Shutdown",
+    "on-click": "poweroff",
+    "interval": "once"
   }
 }
