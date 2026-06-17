@@ -48,6 +48,7 @@ do
 		in_error = false
 	end)
 end
+
 -- }}}
 
 -- {{{ Variable definitions
@@ -123,6 +124,17 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = myma
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
+
+-- Screenshot
+local function screenshot_region()
+	local timestamp = os.date("%Y%m%d_%H%M%S")
+	local dir = os.getenv("HOME") .. "/Imagens/Capturas/"
+	os.execute("mkdir -p " .. dir)
+	local filename = dir .. "captura_" .. timestamp .. ".png"
+	awful.spawn("maim -s -u " .. filename)
+	naughty.notify({ title = "Screenshot", text = "Salvo: " .. filename, timeout = 2 })
+end
+
 -- Screen Tearing
 awful.spawn.with_shell("picom --backend glx --vsync &")
 
@@ -154,6 +166,36 @@ awful.spawn.with_shell("xinput set-prop 'ELAN071A:00 04F3:30FD Touchpad' 'libinp
 -- Systray
 awful.spawn.with_shell("blueman-applet &")
 awful.spawn.with_shell("nm-applet &")
+
+-- Caffeine
+local caffeine_widget = wibox.widget.textbox()
+caffeine_widget.font = "Terminess Nerd Font 12"
+
+local caffeine_active = false
+
+local function update_caffeine_widget()
+	if caffeine_active then
+		caffeine_widget:set_text("󰅶 ")
+	else
+		caffeine_widget:set_text("󰅵 ")
+	end
+end
+
+local function toggle_caffeine()
+	caffeine_active = not caffeine_active
+	if caffeine_active then
+		awful.spawn("xautolock -disable")
+		naughty.notify({ title = "Caffeine", text = "Bloqueio automático DESATIVADO", timeout = 2 })
+	else
+		awful.spawn("xautolock -enable")
+		naughty.notify({ title = "Caffeine", text = "Bloqueio automático ATIVADO", timeout = 2 })
+	end
+	update_caffeine_widget()
+end
+
+caffeine_widget:buttons(gears.table.join(awful.button({}, 1, toggle_caffeine)))
+
+update_caffeine_widget()
 
 -- Keyboard map indicator and switcher
 kb_layout = wibox.widget.textbox()
@@ -263,7 +305,7 @@ local function update_battery()
 
 	local icon = ""
 	if status == "Charging" then
-		icon = "⚡"
+		icon = "󱐌"
 	elseif status == "Discharging" then
 		local cap_num = tonumber(capacity) or 0
 		if cap_num > 80 then
@@ -411,6 +453,8 @@ awful.screen.connect_for_each_screen(function(s)
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
 			separator,
+			caffeine_widget,
+			separator,
 			kb_layout,
 			separator,
 			volume_widget,
@@ -525,6 +569,11 @@ globalkeys = gears.table.join(
 		end
 	end, { description = "fullscreen", group = "client" }),
 
+	-- Screenshot Keybinding
+	awful.key({}, "Print", function()
+		screenshot_region()
+	end),
+
 	-- Floating Window
 	awful.key({ modkey, "Shift" }, "space", function()
 		local c = client.focus
@@ -556,11 +605,6 @@ globalkeys = gears.table.join(
 
 	-- Exit
 	awful.key({ modkey, "Shift" }, "e", awesome.quit, { description = "quit awesome", group = "awesome" }),
-
-	-- Screenshot
-	awful.key({}, "Print", function()
-		awful.spawn("flameshot gui")
-	end, { description = "screenshot", group = "launcher" }),
 
 	-- Volume
 	awful.key({}, "XF86AudioRaiseVolume", function()
@@ -686,6 +730,22 @@ awful.rules.rules = {
 	},
 	{
 		rule = { class = "Firefox" },
+		properties = { floating = false, maximized = false, fullscreen = false, placement = nil },
+	},
+	{
+		rule = { class = "bitwarden" },
+		properties = { floating = false, maximized = false, fullscreen = false, placement = nil },
+	},
+	{
+		rule = { class = "Bitwarden" },
+		properties = { floating = false, maximized = false, fullscreen = false, placement = nil },
+	},
+	{
+		rule = { class = "discord" },
+		properties = { floating = false, maximized = false, fullscreen = false, placement = nil },
+	},
+	{
+		rule = { class = "Discord" },
 		properties = { floating = false, maximized = false, fullscreen = false, placement = nil },
 	},
 
