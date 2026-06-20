@@ -57,7 +57,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- Appearance (gaps, bordas, cores)
 beautiful.useless_gap = 1
-beautiful.border_width = 1
+beautiful.border_width = 2
 beautiful.border_color_normal = "#000000"
 beautiful.border_color_focus = "#ffffff"
 beautiful.gap_single_client = true
@@ -76,7 +76,7 @@ beautiful.notification_timeout = 8
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -138,9 +138,12 @@ end
 -- Screen Tearing
 awful.spawn.with_shell("picom --backend glx --vsync &")
 
--- Auto lock
+-- Force keyboard layout
+awful.spawn.with_shell("setxkbmap -layout us -variant intl")
+
+-- Autolock
 awful.spawn.with_shell(
-	"xautolock -time 5 -locker 'i3lock -i /home/filipe/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png' -detectsleep &"
+	"xset s 300 && xss-lock -- i3lock -i /home/filipemsandrade/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png &"
 )
 
 -- Monitors
@@ -166,36 +169,6 @@ awful.spawn.with_shell("xinput set-prop 'ELAN071A:00 04F3:30FD Touchpad' 'libinp
 -- Systray
 awful.spawn.with_shell("blueman-applet &")
 awful.spawn.with_shell("nm-applet &")
-
--- Caffeine
-local caffeine_widget = wibox.widget.textbox()
-caffeine_widget.font = "Terminess Nerd Font 12"
-
-local caffeine_active = false
-
-local function update_caffeine_widget()
-	if caffeine_active then
-		caffeine_widget:set_text("󰅶 ")
-	else
-		caffeine_widget:set_text("󰅵 ")
-	end
-end
-
-local function toggle_caffeine()
-	caffeine_active = not caffeine_active
-	if caffeine_active then
-		awful.spawn("xautolock -disable")
-		naughty.notify({ title = "Caffeine", text = "Bloqueio automático DESATIVADO", timeout = 2 })
-	else
-		awful.spawn("xautolock -enable")
-		naughty.notify({ title = "Caffeine", text = "Bloqueio automático ATIVADO", timeout = 2 })
-	end
-	update_caffeine_widget()
-end
-
-caffeine_widget:buttons(gears.table.join(awful.button({}, 1, toggle_caffeine)))
-
-update_caffeine_widget()
 
 -- Keyboard map indicator and switcher
 kb_layout = wibox.widget.textbox()
@@ -242,7 +215,7 @@ mysystray:set_base_size(26)
 -- Power Buttons
 local lock_button = wibox.widget.textbox(" ")
 lock_button:buttons(gears.table.join(awful.button({}, 1, function()
-	awful.spawn("i3lock -i /home/filipe/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png")
+	awful.spawn("i3lock -i /home/filipemsandrade/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png")
 end)))
 lock_button.font = "Terminess Nerd Font 10"
 
@@ -254,13 +227,13 @@ logout_button.font = "Terminess Nerd Font 10"
 
 local reboot_button = wibox.widget.textbox("  ")
 reboot_button:buttons(gears.table.join(awful.button({}, 1, function()
-	awful.spawn("loginctl reboot")
+	awful.spawn("reboot")
 end)))
 reboot_button.font = "Terminess Nerd Font 10"
 
 local shutdown_button = wibox.widget.textbox("  ")
 shutdown_button:buttons(gears.table.join(awful.button({}, 1, function()
-	awful.spawn("loginctl poweroff")
+	awful.spawn("poweroff")
 end)))
 shutdown_button.font = "Terminess Nerd Font 10"
 
@@ -386,7 +359,11 @@ local tasklist_buttons = gears.table.join(
 
 local function set_wallpaper(s)
 	-- Wallpaper
-	gears.wallpaper.maximized("/home/filipe/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png", s, true)
+	gears.wallpaper.maximized(
+		"/home/filipemsandrade/Imagens/Wallpaper/world-map-black-and-3840x2160-16671.png",
+		s,
+		true
+	)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -430,6 +407,19 @@ awful.screen.connect_for_each_screen(function(s)
 		screen = s,
 		filter = awful.widget.tasklist.filter.currenttags,
 		buttons = tasklist_buttons,
+		widget_template = {
+			{
+				{
+					{
+						id = "text_role",
+						widget = wibox.widget.textbox,
+					},
+					layout = wibox.layout.align.horizontal,
+				},
+				widget = wibox.container.background,
+			},
+			layout = wibox.layout.align.horizontal,
+		},
 	})
 
 	-- Create the wibox
@@ -452,8 +442,6 @@ awful.screen.connect_for_each_screen(function(s)
 		s.mytasklist, -- Middle widget
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
-			separator,
-			caffeine_widget,
 			separator,
 			kb_layout,
 			separator,
@@ -597,7 +585,7 @@ globalkeys = gears.table.join(
 
 	-- Menu (rofi)
 	awful.key({ modkey }, "d", function()
-		awful.spawn("rofi -show drun")
+		awful.spawn("rofi -show drun -theme ~/.config/rofi/themes/custom.rasi")
 	end, { description = "show menu", group = "launcher" }),
 
 	-- Reload awesome
